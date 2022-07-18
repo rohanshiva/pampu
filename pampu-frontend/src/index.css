@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --bg: #FFFEFE;
+    --primary: black;
+    --secondary: #F7F9FA;
+    --accent: #F8FF76;
+    --primary-font: 'Inter', sans-serif;
+}
+
+html {
+    font-size: 16px;
+}
+
+h1 {
+    font-weight: 900;
+}
+
+body {
+    font-family: var(--primary-font);
+    display: grid;
+    place-items: center;
+    background-color: var(--bg);
+    white-space: pre-line;
+}
+
+main {
+    width: 100%;
+    padding: 1rem;
+    max-width: 40rem;
+}
+
+.input-container {
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.send {
+    min-width: fit-content;
+    max-height: 2rem;
+    padding: 0.2rem 0.8rem;
+    background-color: var(--accent);
+    border: none;
+    outline: none;
+    font-family: 'Fira Mono', monospace;
+}
+
+textarea {
+    border: none;
+    outline: none;
+    border-radius: 0.2rem;
+    background-color: var(--secondary);
+    padding: 1rem;
+    font-family: 'Fira Mono', monospace;
+}
+
+hr {
+    height: 0;
+    color: var(--secondary);
+    border-top-width: 1px;
+    border-top: 0 solid var(--secondary);
+}
+
+.time-tag {
+    font-size: small;
+}
+
+.lime-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon-button {
+    font-weight: 500;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.2rem;
+    outline: none;
+    border: none;
+    color: grey;
+    background-color: var(--secondary);
+    display: flex;
+    align-items: center;
+}
+
+.icon-button:hover {
+    color: var(--primary)
+}
+
+
+
+.limes-container {
+    max-height: 70vh;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.3rem;
+}
+
+.lime-container {
+    width: 100%;
+    max-width: 40rem;
+}
+
+.lime-content {
+    overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    height: 0.25rem;
+    width: 0.25rem;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+}
+
+.actions {
+    min-width: fit-content;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+.poof {
+    background-color: grey;
+    color: white;
+}
+
+.toolbar-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}
+
+.file-lime {
+    display: flex;
+    color: grey;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0.3rem;
+}
+
+a {
+    color: #056CF0;
+    text-decoration: none;
+}
+
+a:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
