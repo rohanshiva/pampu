@@ -1,0 +1,19 @@
+name: publish-app
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  builder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: run-action
+        uses: rohanshiva/actions@main
+        with:
+          app: 80f2c1ca-d6d9-4448-98d2-a04406b19b7c
+          desc: "share stuff across your personal devices"
+        env:
+          DETA_ACCESS_TOKEN: ${{ secrets.DETA_ACCESS_TOKEN }}
