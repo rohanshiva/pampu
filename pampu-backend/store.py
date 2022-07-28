@@ -57,5 +57,3 @@ class Store:
     def download_file(self, name: str):
         res = self._drive.get(name)
         return StreamingResponse(res.iter_chunks())
-
-

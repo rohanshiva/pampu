@@ -3,10 +3,7 @@ import config from "../config";
 
 const instance = axios.create({
     baseURL: config.base,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-    }
+    withCredentials: true,
 })
 
 instance.interceptors.response.use(
