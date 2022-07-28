@@ -11,10 +11,11 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 store = store.Store()
 
+origins = [f"https://{os.getenv('DETA_SPACE_APP_HOSTNAME')}"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f"https://{os.getenv('DETA_SPACE_APP_HOSTNAME')}"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,7 +55,7 @@ async def fetch_limes(limit: int = 10, last: Union[str, None] = None):
 @app.get("/api/download/{name}")
 def download_file(name: str):
     res = store.download_file(name)
-    return res
+    return StreamingResponse(res.iter_chunks())
 
 
 @app.delete("/api/delete/{key}")

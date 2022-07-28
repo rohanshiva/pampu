@@ -1,57 +1,52 @@
 import config from "../config";
-import api from "../utils/API";
 import ILime from "../interfaces/Lime";
 
 class LimeService {
     static async addFile(file: FormData) {
+        const url = `${config.base}/${config.addFile}`
         try {
-            const response = await api.post(config.addFile, file);
+            const response = await fetch(url, { method: "POST", credentials: "include", body: file });
             if (response.status === 201) {
-                return response.data
+                const data = await response.json();
+                return data
             } else {
-                throw Error(`Failed to add file lime: ${response.statusText}`)
+                throw Error(`Failed to add file lime: ${response.status}`)
             }
         } catch (error: any) {
-            throw Error(error.response.data.detail)
+            throw (error);
         }
     }
 
     static async add(lime: string, expires?: boolean): Promise<ILime> {
+        const url = `${config.base}/${config.add}`
+        const body = { content: lime, expires: expires }
         try {
-            const body = { "content": lime, "expires": expires }
-            const response = await api.post(config.add, body);
+            const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify(body) });
             if (response.status === 201) {
-                return response.data
+                const data = await response.json();
+                return data
             } else {
-                throw Error(`Failed to add lime: ${response.statusText}`)
+                throw Error(`Failed to add lime: ${response.status}`)
             }
         } catch (error: any) {
-            throw Error(error.response.data.detail)
+
+            throw (error);
         }
     }
 
-    // static async download(name: string): Promise<void> {
-    //     const url = `${config.download}/${name}`;
-    //     try {
-    //         const response = await api.get(url);
-    //         console.log(response.data)
-    //         return response.data;
-    //     } catch (error: any) {
-    //         throw Error(error.response.data.detail)
-    //     }
-    // }
-
     static async fetch(last?: string): Promise<ILime[]> {
-        const url = last ? `${config.fetch}` : `${config.fetch}`
+        const url = `${config.base}/${config.fetch}`
         try {
-            const response = await api.get(url);
+            const response = await fetch(url, { credentials: "include" });
             if (response.status === 200) {
-                return response.data
+                const data = await response.json();
+                return data
             } else {
-                throw Error(`Failed to fetch limes ${response.statusText}`)
+                throw Error(`Failed to add lime: ${response.status}`)
             }
         } catch (error: any) {
-            throw Error(error.response.data.detail)
+            console.log(error)
+            throw (error);
         }
     }
 }

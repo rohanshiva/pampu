@@ -13,9 +13,10 @@ import toast from 'react-hot-toast';
 
 function Pampu() {
 
+    const lastLimeRef = useRef(null)
     const [lime, setLime] = useState<string>("")
     const [limes, setLimes] = useState<ILime[]>([])
-
+    const [shouldFetch, setShouldFetch] = useState(true);
 
     const onDrop = async (acceptedFiles: any) => {
         const formData = new FormData();
@@ -42,7 +43,6 @@ function Pampu() {
 
 
 
-    const lastLimeRef = useRef(null)
 
     const parseTimestamp = (timestamp: string) => {
         const date = new Date(parseInt(timestamp));
@@ -53,8 +53,9 @@ function Pampu() {
     const fetchLimes = async () => {
         const loadingToast = toast.loading("Fetching limes...", LOADING as any);
         try {
-            const newLimes = await LimeService.fetch()
-            setLimes(newLimes)
+            const newLimes = await LimeService.fetch();
+            setLimes(newLimes);
+            setShouldFetch(false);
             // @ts-ignore
             lastLimeRef.current?.scrollIntoView({ behavior: "smooth" })
             toast.dismiss(loadingToast);
@@ -69,10 +70,15 @@ function Pampu() {
     }
 
     useEffect(() => {
-        if (!(limes && limes.length > 0)) {
+        if (shouldFetch) {
             fetchLimes();
         }
     })
+
+    useEffect(() => {
+        // @ts-ignore
+        lastLimeRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [limes])
 
     const handleSendLime = async (expires?: boolean) => {
         if (!lime) {
@@ -117,48 +123,52 @@ function Pampu() {
     return (
         <>
             <div className="limes-container" >
-                {limes && limes.length > 0 ? limes.map((lime, index) => (
-                    <div className="lime-container" key={index} ref={((index === limes.length - 1) ? lastLimeRef : null)}>
-                        <div className="lime-content">
-                            {lime.is_file ?
-                                (<>
-                                    <div className='file-lime'>
-                                        <File size={16} />
-                                        <a href={`${config.base}/download/${lime.key}-${lime.content}`}>
-                                            <code>{lime.content}</code>
-                                        </a>
+                {limes && limes.length > 0 ? limes.map((lime, index) => {
+                    console.log(lime, index, lastLimeRef)
 
-                                    </div>
+                    return (
+                        <div className="lime-container" key={index} ref={((index === limes.length - 1) ? lastLimeRef : null)}>
+                            <div className="lime-content">
+                                {lime.is_file ?
+                                    (<>
+                                        <div className='file-lime'>
+                                            <File size={16} />
+                                            <a href={`${config.base}/download/${lime.key}-${lime.content}`}>
+                                                <code>{lime.content}</code>
+                                            </a>
 
-                                </>
-                                ) :
-                                (
-                                    <>
-                                        <Lime lime={lime.content} />
+                                        </div>
+
                                     </>
-                                )
-                            }
-                        </div>
-                        <div className="lime-toolbar">
-                            <div className="time-tag">
-                                {parseTimestamp(lime.key)}
+                                    ) :
+                                    (
+                                        <>
+                                            <Lime lime={lime.content} />
+                                        </>
+                                    )
+                                }
                             </div>
-                            <div className="toolbar-actions">
-                                <button className="icon-button" onClick={() => handleCopy(lime.content)}>
-                                    <Copy size={16} />
-                                </button>
-                                {lime.is_file && (
-                                    <button className="icon-button" onClick={() => handleDownload(lime.content, lime.key)}>
-                                        <Download size={16} />
+                            <div className="lime-toolbar">
+                                <div className="time-tag">
+                                    {parseTimestamp(lime.key)}
+                                </div>
+                                <div className="toolbar-actions">
+                                    <button className="icon-button" onClick={() => handleCopy(lime.content)}>
+                                        <Copy size={16} />
                                     </button>
-                                )}
+                                    {lime.is_file && (
+                                        <button className="icon-button" onClick={() => handleDownload(lime.content, lime.key)}>
+                                            <Download size={16} />
+                                        </button>
+                                    )}
+
+                                </div>
 
                             </div>
-
+                            <hr />
                         </div>
-                        <hr />
-                    </div>
-                )) :
+                    )
+                }) :
                     (
                         <div>
                             No 🍋's yet, add some
