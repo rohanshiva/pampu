@@ -11,7 +11,12 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 store = store.Store()
 
-origins = [f"https://{os.getenv('DETA_SPACE_APP_HOSTNAME')}"]
+
+
+host = os.getenv('DETA_SPACE_APP_HOSTNAME').split(".deta.app")[0]
+user = "rohanshiva"
+origin = f"https://{host}.{user}.deta.app"
+origins = [origin]
 
 app.add_middleware(
     CORSMiddleware,
