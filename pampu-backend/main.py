@@ -30,6 +30,9 @@ Routes
 def hello():
     return {"msg": "hello from pampu backend api!! 🍋"}
 
+@app.get("/primary")
+def primary_micro():
+    return {"primary": origins}
 
 @app.post("/api/add", status_code=201)
 def add_lime(lime: models.Lime):
