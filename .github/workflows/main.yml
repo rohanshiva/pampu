@@ -13,7 +13,7 @@ jobs:
       - id: run-action
         uses: deta/publish-pc-app@main
         with:
-          app: 56a67aef-033a-4750-aa68-568b1bb5f3a6
+          app: 80f2c1ca-d6d9-4448-98d2-a04406b19b7c
           desc: "share stuff across your personal devices"
         env:
           DETA_ACCESS_TOKEN: ${{ secrets.DETA_ACCESS_TOKEN }}
