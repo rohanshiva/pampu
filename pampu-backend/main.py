@@ -13,9 +13,8 @@ store = store.Store()
 
 
 
-host = os.getenv('DETA_SPACE_APP_HOSTNAME').split(".deta.app")[0]
-user = "rohanshiva"
-origin = f"https://{host}.{user}.deta.app"
+host = os.getenv('DETA_SPACE_APP_HOSTNAME')
+origin = f"https://{host}"
 origins = [origin]
 
 app.add_middleware(
