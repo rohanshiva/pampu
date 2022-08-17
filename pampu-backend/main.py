@@ -5,7 +5,7 @@ import models
 from typing import Union
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import StreamingResponse
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
