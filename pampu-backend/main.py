@@ -1,9 +1,10 @@
 import os
 import util
+import json
 import store
 import models
 from typing import Union
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import StreamingResponse
 from starlette.middleware.cors import CORSMiddleware
 
@@ -39,7 +40,9 @@ def primary_micro():
     return {"primary": origins}
 
 @app.post("/api/add", status_code=201)
-def add_lime(lime: models.Lime):
+async def add_lime(request: Request):
+    body = await request.body()
+    lime = models.Lime.parse_obj(json.loads(body))
     res = store.add(lime.content, None, lime.expires)
     return res
 

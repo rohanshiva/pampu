@@ -21,7 +21,7 @@ class LimeService {
         const url = `${config.base}/${config.add}`
         const body = { content: lime, expires: expires }
         try {
-            const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify(body) });
+            const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, credentials: "include", body: JSON.stringify(body) });
             if (response.status === 201) {
                 const data = await response.json();
                 return data
