@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: run-action
-        uses: deta/publish-pc-app@main
+        uses: deta/publish-pc-app@v0-v1
         with:
           app: cebace60-ac32-4a11-8967-ecae3cc816a7
           desc: "share stuff across your personal devices"

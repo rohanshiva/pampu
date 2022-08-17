@@ -1,11 +1,9 @@
 v: 1
 micros:
     - name: pampu-frontend
-      directory: pampu-frontend
+      src: pampu-frontend
       engine: create-react-app
-      command: npm run build
-      publish: build
       primary: true
     - name: pampu-backend
-      directory: pampu-backend
+      src: pampu-backend
       engine: python3.9
