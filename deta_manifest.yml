@@ -1,9 +1,0 @@
-v: 1
-micros:
-    - name: pampu-frontend
-      src: pampu-frontend
-      engine: create-react-app
-      primary: true
-    - name: pampu-backend
-      src: pampu-backend
-      engine: python3.9
