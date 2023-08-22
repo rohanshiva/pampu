@@ -1,0 +1,17 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: server
+    src: server
+    engine: python3.9
+    primary: false
+    path: api
+    dev: uvicorn main:app
+  - name: ui
+    src: ui
+    engine: static
+    commands:
+      - yarn build
+    serve: dist
+    dev: yarn dev --port $PORT --host
+    primary: true

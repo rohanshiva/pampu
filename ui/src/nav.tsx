@@ -1,8 +1,8 @@
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "./theme-toggle";
 
 export default function Nav() {
     return (
-        <nav className="pt-8 flex flex-row justify-between">
+        <nav className="flex flex-row justify-between">
             <h1 className="text-3xl font-bold font-kumar">
                 Pampu!
             </h1>

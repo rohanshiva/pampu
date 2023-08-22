@@ -23,6 +23,9 @@
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
 
+    --selection: black;
+    --selection-foreground: white;
+
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
 
@@ -56,6 +59,9 @@
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
 
+    --selection: white;
+    --selection-foreground: black;
+  
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
 
@@ -75,5 +81,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  ::selection {
+    background: var(--selection);
+    color: var(--selection-foreground);
   }
 }
