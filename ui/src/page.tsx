@@ -124,6 +124,7 @@ export default function Page() {
                     }}
                     key={bookmark.key}
                     ref={index === bookmarks.length - 1 ? lastBookmarkRef : null}
+                    className="select-none"
                   >
                     <Bookmark bookmark={bookmark} selected={index === cursor} />
                   </div>
