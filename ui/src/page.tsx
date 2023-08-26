@@ -49,7 +49,7 @@ export default function Page() {
       const { key, snippet, contentType, metadata } = bookmarks[cursor];
 
       if (contentType === ContentType.FILE || contentType === ContentType.IMAGE) {
-        await navigator.clipboard.writeText(`${Store.config.base}/${Store.config.download}/${key}${metadata["fileExtension"]}`);
+        await navigator.clipboard.writeText(`${window.location.origin}/${Store.config.base}/${Store.config.download}/${key}${metadata["fileExtension"]}`);
       } else {
         await navigator.clipboard.writeText(snippet);
       }

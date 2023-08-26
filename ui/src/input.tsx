@@ -70,6 +70,38 @@ interface InputProps {
 export default function Input({ addBookmark }: InputProps) {
     const [snippet, setSnippet] = useState<string>("");
     const [file, setFile] = useState<File | null>(null);
+    const [isDragActive, setDragActive] = useState<boolean>(false);
+
+    const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+    };
+
+    const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setDragActive(true);
+    };
+
+    const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setDragActive(false);
+    };
+
+    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setDragActive(false);
+
+        const files = event.dataTransfer.files;
+        if (files.length && files[0].type.indexOf("image/png") !== -1) {
+            const [selectedFile] = files;
+            const filename = selectedFile.name.replace(/\.png$/, "");
+            setFile(selectedFile);
+            setSnippet(filename);
+        }
+    };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === Key.Escape) {
@@ -102,20 +134,31 @@ export default function Input({ addBookmark }: InputProps) {
         }
     };
 
+    const placeholder = isDragActive ? "Drop the file!" : (file
+        ? "Uploaded image! Insert image caption, or click Esc to discontinue."
+        : "Insert any links, text, or images")
+
     return (
         <>
             <FileInputSlug file={file} />
-            <Textarea
-                placeholder={
-                    file
-                        ? "Uploaded image! Insert image caption, or click Esc to discontinue."
-                        : "Insert any links, text, or images"
-                }
-                value={snippet}
-                onChange={(event) => setSnippet(event.target.value)}
-                onKeyDown={handleKeyDown}
-                onPaste={handlePaste}
-            />
+
+            <div
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+            >
+                <Textarea
+                    placeholder={
+                        placeholder
+                    }
+                    className={`${isDragActive && "border-dashed"}`}
+                    value={snippet}
+                    onChange={(event) => setSnippet(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    onPaste={handlePaste}
+                />
+            </div>
         </>
     );
 }

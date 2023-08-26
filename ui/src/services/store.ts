@@ -11,7 +11,7 @@ interface BookmarkResponse {
 
 class Store {
     static config = {
-        base: `./api`,
+        base: "api",
         add: "add",
         addFile: "add/file",
         fetch: "fetch",
@@ -20,7 +20,7 @@ class Store {
     }
 
     static async addFile(key: string, file: File) {
-        const url = `${Store.config.base}/${Store.config.addFile}?key=${encodeURIComponent(key)}`;
+        const url = `./${Store.config.base}/${Store.config.addFile}?key=${encodeURIComponent(key)}`;
 
         const formData = new FormData();
         formData.append("file", file);
@@ -38,7 +38,7 @@ class Store {
     }
 
     static async add(bookmark: IBookmark): Promise<IBookmark> {
-        const url = `${Store.config.base}/${Store.config.add}`;
+        const url = `./${Store.config.base}/${Store.config.add}`;
 
         const body = decamelizeKeys(bookmark);
 
@@ -57,7 +57,7 @@ class Store {
     }
 
     static async fetch(last?: string): Promise<IBookmark[]> {
-        let url = `${Store.config.base}/${Store.config.fetch}`
+        let url = `./${Store.config.base}/${Store.config.fetch}`
 
         if (last) {
             url = `${url}?last=${last}`
@@ -77,7 +77,7 @@ class Store {
     }
 
     static async delete(key: string): Promise<string> {
-        const url = `${Store.config.base}/${Store.config.delete}/${key}`
+        const url = `./${Store.config.base}/${Store.config.delete}/${key}`
         try {
             const response = await fetch(url, { method: "DELETE" });
             if (response.status === 200) {
