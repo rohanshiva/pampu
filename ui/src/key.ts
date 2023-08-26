@@ -6,5 +6,7 @@ export enum Key {
     ArrowUp = "ArrowUp",
     ArrowDown = "ArrowDown",
     I = "KeyI",
-    P = "KeyP"
+    P = "KeyP",
+    S = "KeyS",
+    V = "KeyV"
 }

@@ -85,7 +85,7 @@ export default function Page() {
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.Backspace) {
         event.preventDefault();
         remove(cursor);
-      } else if (event.code === Key.P) {
+      } else if ((event.metaKey || event.ctrlKey) && event.code === Key.V) {
         setPreviewOpen(true);
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.I) {
         event.preventDefault();
@@ -134,20 +134,27 @@ export default function Page() {
                       setCursor(index);
                       setPreviewOpen(true);
                     }}>Preview
-                      <ContextMenuShortcut>Space</ContextMenuShortcut>
+                      <ContextMenuShortcut>⌘ + V</ContextMenuShortcut>
                     </ContextMenuItem>
                   }
                   <ContextMenuItem onClick={() => {
                     remove(index);
                   }}>Delete
-                    <ContextMenuShortcut>⌘⌫</ContextMenuShortcut>
+                    <ContextMenuShortcut>⌘ + Backspace</ContextMenuShortcut>
                   </ContextMenuItem>
                   <ContextMenuItem onClick={() => {
                     setCursor(index);
                     copyBookmark();
                   }}>Copy
-                    <ContextMenuShortcut>⌘ Enter</ContextMenuShortcut>
+                    <ContextMenuShortcut>⌘ + Enter</ContextMenuShortcut>
                   </ContextMenuItem>
+                  {isUrl(bookmark.snippet) &&
+                    <ContextMenuItem onClick={() => {
+                      setCursor(index);
+                      openBookmark();
+                    }}>Open
+                      <ContextMenuShortcut>⌘ + I</ContextMenuShortcut>
+                    </ContextMenuItem>}
                 </ContextMenuContent>
               </ContextMenu>
             ))}

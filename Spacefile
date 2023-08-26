@@ -13,5 +13,5 @@ micros:
     commands:
       - yarn build
     serve: dist
-    dev: yarn dev --port $PORT --host
+    dev: yarn dev --port $PORT
     primary: true
