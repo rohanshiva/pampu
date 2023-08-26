@@ -160,7 +160,7 @@ export default function Page() {
               </ContextMenu>
             ))}
           </div>
-          {bookmarks[cursor] && <PreviewBookmark bookmark={bookmarks[cursor]} setOpen={setPreviewOpen} open={previewOpen} />}
+          {bookmarks[cursor] && <PreviewBookmark bookmark={bookmarks[cursor]} key={bookmarks[cursor].key} setOpen={setPreviewOpen} open={previewOpen} />}
         </div>
         <Toaster />
       </ThemeContext.Provider>
