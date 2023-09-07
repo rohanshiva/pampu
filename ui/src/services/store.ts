@@ -1,6 +1,9 @@
+import { Base, Drive } from "deta";
 import { nanoid } from "nanoid";
 import { camelizeKeys, decamelizeKeys } from "humps";
-import { IBookmark } from "../interfaces";
+import { ContentType, IBookmark } from "../interfaces";
+import { FetchOptions } from "deta/dist/types/types/base/request";
+import { DetaType } from "deta/dist/types/types/basic";
 
 interface BookmarkResponse {
     key: string;
@@ -10,6 +13,9 @@ interface BookmarkResponse {
 }
 
 class Store {
+    private static base = Base("bookmarks");
+    private static drive = Drive("bookmarks");
+
     static config = {
         base: "api",
         add: "add",
@@ -19,74 +25,75 @@ class Store {
         delete: "delete"
     }
 
-    static async addFile(key: string, file: File) {
-        const url = `./${Store.config.base}/${Store.config.addFile}?key=${encodeURIComponent(key)}`;
+    static buildFilename(key: string, metadata: Record<string, any>): string {
+        const fileExtension = metadata["file_extension"];
+        return fileExtension ? `${key}${fileExtension}` : key;
+    }
 
-        const formData = new FormData();
-        formData.append("file", file);
+    static async addFile(key: string, file: File) {
+        const item = await this.base.get(key) as unknown as BookmarkResponse;
+
+        // file store not needed if base item doesn't exist or if content type is not file-like
+        if ((!item) || (item["content_type"] == ContentType.TEXT)) {
+            return
+        }
+
+        const filename = this.buildFilename(key, item["metadata"]);
+        const buffer = new Uint8Array(await file.arrayBuffer());
 
         try {
-            const response = await fetch(url, { method: "POST", body: formData });
-            if (response.status === 201) {
-                return await response.json();
-            } else {
-                throw Error(`Failed to add image for bookmark: ${response.status}`)
-            }
-        } catch (error: any) {
-            throw (error);
+            await this.drive.put(filename, { data: buffer, contentType: item["content_type"] });
+            return key;
+        } catch (err: any) {
+            throw Error("Sorry, something is wrong! Couldn't sync your bookmark's file. Please try refreshing.");
         }
     }
 
     static async add(bookmark: IBookmark): Promise<IBookmark> {
-        const url = `./${Store.config.base}/${Store.config.add}`;
-
-        const body = decamelizeKeys(bookmark);
-
         try {
-            const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-            if (response.status === 201) {
-                const bookmark: BookmarkResponse = await response.json();
-                return camelizeKeys(bookmark) as IBookmark;
-            } else {
-                throw Error(`Failed to add bookmark: ${response.status}`)
-            }
+            await this.base.put(decamelizeKeys(bookmark) as DetaType);
+            return bookmark;
         } catch (error: any) {
 
-            throw (error);
+            throw Error("Sorry, somehting is wrong! Couldn't sync your bookmark. Please try refreshing.");
         }
     }
 
     static async fetch(last?: string): Promise<IBookmark[]> {
-        let url = `./${Store.config.base}/${Store.config.fetch}`
-
-        if (last) {
-            url = `${url}?last=${last}`
-        }
-
         try {
-            const response = await fetch(url);
-            if (response.status === 200) {
-                const bookmarks = await response.json();
-                return bookmarks.map((bookmark: BookmarkResponse) => camelizeKeys(bookmark) as IBookmark);
-            } else {
-                throw Error(`Failed to add lime: ${response.status}`)
-            }
+            const options: FetchOptions = last ? { last } : {};
+            const response = await this.base.fetch({}, options);
+            const bookmarks = await response.items;
+            return bookmarks.map((bookmark) => camelizeKeys(bookmark) as IBookmark);
         } catch (error: any) {
-            throw (error);
+            throw Error("Sorry, something is wrong! Please try refreshing.")
         }
     }
 
     static async delete(key: string): Promise<string> {
-        const url = `./${Store.config.base}/${Store.config.delete}/${key}`
+        const item = await this.base.get(key) as unknown as BookmarkResponse;
+
+        if (!item) {
+            return key
+        }
+
         try {
-            const response = await fetch(url, { method: "DELETE" });
-            if (response.status === 200) {
-                return key
-            } else {
-                throw Error(`Failed to delete bookmark: ${response.status}`)
-            }
+            await this.base.delete(key);
+        } catch (err) {
+            throw Error("Sorry, something is wrong! Couldn't delete your bookmark.");
+        }
+
+        if (item["content_type"] == ContentType.TEXT) {
+            return key
+        }
+
+        const filename = await this.buildFilename(key, item["metadata"]);
+
+        try {
+            await this.drive.delete(filename);
+            return key
         } catch (error: any) {
-            throw (error);
+            throw Error("Sorry, something is wrong! Couldn't delete your bookmark's image.")
         }
     }
 

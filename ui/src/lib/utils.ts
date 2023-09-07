@@ -12,3 +12,7 @@ export function truncate(str: string, maxChars: number = 50) {
 
   return `${str.slice(0, maxChars)}...`
 }
+
+export function isMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}

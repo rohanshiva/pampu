@@ -85,7 +85,7 @@ export default function Page() {
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.Backspace) {
         event.preventDefault();
         remove(cursor);
-      } else if ((event.metaKey || event.ctrlKey) && event.code === Key.V) {
+      } else if ((event.metaKey || event.ctrlKey) && event.code === Key.E) {
         setPreviewOpen(true);
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.I) {
         event.preventDefault();
@@ -114,7 +114,7 @@ export default function Page() {
           <div className="pt-12">
             <Input addBookmark={addBookmark} />
           </div>
-          <div className="flex-grow mt-8 pt-4 flex flex-col gap-1 border-t-2 cursor-pointer overflow-y-auto">
+          <div className="flex-grow mt-8 pt-4 flex flex-col gap-1 border-t-2 cursor-pointer overflow-y-auto ring-transparent" style={{ WebkitTapHighlightColor: "transparent" }}>
             {bookmarks.map((bookmark, index) => (
               <ContextMenu>
                 <ContextMenuTrigger>
@@ -135,7 +135,7 @@ export default function Page() {
                       setCursor(index);
                       setPreviewOpen(true);
                     }}>Preview
-                      <ContextMenuShortcut>⌘ + V</ContextMenuShortcut>
+                      <ContextMenuShortcut>⌘ + E</ContextMenuShortcut>
                     </ContextMenuItem>
                   }
                   <ContextMenuItem onClick={() => {

@@ -3,6 +3,9 @@ import { Textarea } from "./components/ui/textarea";
 import { Key } from "./key";
 import { ContentType, IBookmark } from "./interfaces";
 import Store from "./services/store";
+import { isMobile } from "./lib/utils";
+import { Button } from "./components/ui/button";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
 
 const isEmpty = (snippet: string) => {
     return snippet.trim().length === 0;
@@ -103,21 +106,25 @@ export default function Input({ addBookmark }: InputProps) {
         }
     };
 
+    const handleSubmit = () => {
+        const bookmark = buildBookmark(snippet, file);
+        addBookmark(bookmark);
+        setSnippet("");
+        setFile(null);
+    }
+
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === Key.Escape) {
             setFile(null);
         }
 
-        if (!(event.key === Key.Enter && !event.shiftKey) || isEmpty(snippet)) {
+        if (!(event.key === Key.Enter && !event.shiftKey) || ((event.metaKey || event.ctrlKey) && event.key === Key.Enter) || isEmpty(snippet) || isMobile()) {
             return;
         }
 
         event.preventDefault();
 
-        const bookmark = buildBookmark(snippet, file);
-        addBookmark(bookmark);
-        setSnippet("");
-        setFile(null);
+        handleSubmit();
     };
 
     const handlePaste = async (
@@ -143,6 +150,7 @@ export default function Input({ addBookmark }: InputProps) {
             <FileInputSlug file={file} />
 
             <div
+                className="flex flex-row gap-2 items-end"
                 onDragOver={handleDragOver}
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
@@ -158,6 +166,13 @@ export default function Input({ addBookmark }: InputProps) {
                     onKeyDown={handleKeyDown}
                     onPaste={handlePaste}
                 />
+                {(isMobile() && !isEmpty(snippet)) && (
+                    <div>
+                        <Button variant="outline" onClick={() => { handleSubmit(); }}>
+                            <ArrowUpIcon className="font-bold text-lg" />
+                        </Button>
+                    </div>
+                )}
             </div>
         </>
     );

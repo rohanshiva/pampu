@@ -40,7 +40,7 @@ export default function useBookmarks() {
                 return "Synced!";
             },
             error: () => {
-                return "Failed to sync! Refresh the page.";
+                return "Sorry, something is wrong! Please try refreshing.";
             },
         });
     };
@@ -54,7 +54,7 @@ export default function useBookmarks() {
                 return "Synced!";
             },
             error: () => {
-                return "Failed to sync! Try refreshing the page.";
+                return "Sorry, something is wrong! Please try refreshing.";
             },
         });
     };
@@ -88,7 +88,7 @@ export default function useBookmarks() {
     
             setBookmarks(uniqueBookmarks);
         } catch (error) {
-            toast("Failed to fetch some bookmarks! Try refreshing the page.")
+            toast("Sorry, something is wrong! Please try refreshing.");
         } finally {
             setIsLoading(false);
         }
