@@ -26,7 +26,8 @@
     "react-dom": "^18.2.0",
     "sonner": "^0.6.2",
     "tailwind-merge": "^1.13.2",
-    "tailwindcss-animate": "^1.0.6"
+    "tailwindcss-animate": "^1.0.6",
+    "vite-plugin-pwa": "^0.16.5"
   },
   "devDependencies": {
     "@types/humps": "^2.0.3",

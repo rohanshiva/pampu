@@ -1,3 +1,4 @@
+import os
 from deta import Deta
 from fastapi import UploadFile
 from models import Bookmark, ContentType
@@ -105,3 +106,20 @@ class Store:
     def download_file(self, name: str):
         res = self._drive.get(name)
         return res
+
+    def cleanup(self):
+        res = self._drive.list()
+        files = res["names"]
+        while res.get("paging") and res["paging"].get("last"):
+            res = self._drive.list(last=res["paging"].get("last"))
+            files += res["names"]
+
+        files_to_delete = []
+        for file in files:
+            key, _ = os.path.splitext(file)
+            if not self._base.get(key):
+                files_to_delete.append(file)
+
+        if len(files_to_delete):
+            print(f"Deleting #{files_to_delete}")
+            self._drive.delete_many(files_to_delete)

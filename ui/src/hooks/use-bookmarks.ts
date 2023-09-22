@@ -85,10 +85,17 @@ export default function useBookmarks() {
             const uniqueBookmarks = allBookmarks.filter((bookmark, index, self) => 
                 index === self.findIndex((b) => b.key === bookmark.key)
             );
-    
+            
             setBookmarks(uniqueBookmarks);
         } catch (error) {
-            toast("Sorry, something is wrong! Please try refreshing.");
+            toast("Sorry, something is wrong!", {
+                action: {
+                    label: "Retry",
+                    onClick: () => {
+                        fetchBookmarks()
+                    }
+                }
+            })
         } finally {
             setIsLoading(false);
         }
@@ -98,6 +105,6 @@ export default function useBookmarks() {
         bookmarks,
         addBookmark,
         removeBookmark,
-        fetchBookmarks,
+        fetchBookmarks
     };
 }

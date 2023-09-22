@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 import store
 from models import Bookmark
 from typing import Union
@@ -46,3 +47,18 @@ def download_file(name: str):
 @app.delete("/delete/{key}")
 def delete_bookmark(key: str):
     return store.delete(key)
+
+
+class ActionEvent(BaseModel):
+    id: str
+    trigger: str
+
+
+class Action(BaseModel):
+    event: ActionEvent
+
+
+@app.post("/__space/v0/actions")
+def actions(action: Action):
+    if action.event.id == "cleanup":
+        store.cleanup()

@@ -1,5 +1,6 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
+icon: icon.png
 micros:
   - name: api
     src: api
@@ -7,11 +8,17 @@ micros:
     primary: false
     path: api
     dev: uvicorn main:app
+    actions:
+      - id: "cleanup"
+        name: "Clean Up"
+        description: "Cleans up unused images"
+        trigger: "schedule"
+        default_interval: "0/15 * * * *"
   - name: ui
     src: ui
     engine: static
     commands:
       - yarn build
     serve: dist
-    dev: yarn dev --port $PORT
+    dev: yarn dev --port $PORT --host
     primary: true

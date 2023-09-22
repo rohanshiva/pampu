@@ -1,9 +1,10 @@
 import { Toaster as SoonerToaster } from "sonner";
+import { isMobile } from "../../lib/utils";
 
 export function Toaster() {
   return (
     <SoonerToaster
-      position="bottom-right"
+      position={`${isMobile() ? "top-center" : "bottom-right"}`}
       toastOptions={{
         style: {
           background: "hsl(var(--background))",

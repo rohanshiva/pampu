@@ -20,8 +20,6 @@ export default function Page() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const { bookmarks, addBookmark, removeBookmark, fetchBookmarks } = useBookmarks();
 
-  if (!bookmarks.length) fetchBookmarks();
-
   const next = useCallback(() => {
     setCursor((prevCursor) => (prevCursor + 1) % bookmarks.length);
     setPreviewOpen(false);
@@ -85,7 +83,8 @@ export default function Page() {
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.Backspace) {
         event.preventDefault();
         remove(cursor);
-      } else if ((event.metaKey || event.ctrlKey) && event.code === Key.E) {
+      } else if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.code === Key.P) {
+        event.preventDefault();
         setPreviewOpen(true);
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.I) {
         event.preventDefault();
@@ -101,6 +100,10 @@ export default function Page() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleKeyDown]);
+
+  useEffect(() => {
+    fetchBookmarks();
+  }, [])
 
   const lastBookmarkRef = useRef<HTMLDivElement | null>(null);
 
@@ -135,7 +138,7 @@ export default function Page() {
                       setCursor(index);
                       setPreviewOpen(true);
                     }}>Preview
-                      <ContextMenuShortcut>⌘ + E</ContextMenuShortcut>
+                      <ContextMenuShortcut>⌘ + ⇧ + P</ContextMenuShortcut>
                     </ContextMenuItem>
                   }
                   <ContextMenuItem onClick={() => {

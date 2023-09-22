@@ -5,7 +5,7 @@ import { ContentType, IBookmark } from "./interfaces";
 import Store from "./services/store";
 import { isMobile } from "./lib/utils";
 import { Button } from "./components/ui/button";
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import Icon from "./assets/icon";
 
 const isEmpty = (snippet: string) => {
     return snippet.trim().length === 0;
@@ -56,14 +56,21 @@ const useDataUrl = (file: File | null) => {
     return dataUrl;
 };
 
-function FileInputSlug({ file }: { file: File | null }) {
+function FileInputSlug({ file, removeFile }: { file: File | null, removeFile: () => void }) {
     const dataUrl = useDataUrl(file);
 
     if (!dataUrl) {
         return null;
     }
 
-    return <img className="w-24 h-24 object-contain pb-4" src={dataUrl} />;
+    return (
+        <div className="block items-center group">
+            <Button variant="secondary" className="font-mono h-fit w-fit text-xs rounded-full px-1 py-0 text-center absolute -ml-2 -mt-2 invisible group-hover:visible" onClick={() => { removeFile(); }}>
+                x
+            </Button>
+            <img className="w-24 h-24 object-contain pb-4" src={dataUrl} />
+        </div>
+    );
 }
 
 interface InputProps {
@@ -147,8 +154,7 @@ export default function Input({ addBookmark }: InputProps) {
 
     return (
         <>
-            <FileInputSlug file={file} />
-
+            <FileInputSlug file={file} removeFile={() => { setFile(null) }} />
             <div
                 className="flex flex-row gap-2 items-end"
                 onDragOver={handleDragOver}
@@ -168,8 +174,8 @@ export default function Input({ addBookmark }: InputProps) {
                 />
                 {(isMobile() && !isEmpty(snippet)) && (
                     <div>
-                        <Button variant="outline" onClick={() => { handleSubmit(); }}>
-                            <ArrowUpIcon className="font-bold text-lg" />
+                        <Button variant="outline" onClick={() => { handleSubmit(); }} size="icon">
+                            <Icon width="32" height="24" />
                         </Button>
                     </div>
                 )}
