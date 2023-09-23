@@ -60,10 +60,12 @@ export default function Page() {
 
   const openBookmark = useCallback(async () => {
     if (bookmarks.length) {
-      const { snippet } = bookmarks[cursor];
+      const { key, snippet, contentType, metadata } = bookmarks[cursor];
 
       if (isUrl(snippet)) {
         window.open(snippet, "_blank");
+      } else if (isImage(contentType)) {
+        window.open(`${window.location.origin}/${Store.config.base}/${Store.config.download}/${key}${metadata["fileExtension"]}`, "_blank")
       }
     }
   }, [bookmarks, cursor]);
@@ -119,13 +121,12 @@ export default function Page() {
           </div>
           <div className="flex-grow mt-8 pt-4 flex flex-col gap-1 border-t-2 cursor-pointer overflow-y-auto ring-transparent" style={{ WebkitTapHighlightColor: "transparent" }}>
             {bookmarks.map((bookmark, index) => (
-              <ContextMenu>
+              <ContextMenu key={bookmark.key}>
                 <ContextMenuTrigger>
                   <div
                     onClick={() => {
                       setCursor(index);
                     }}
-                    key={bookmark.key}
                     ref={index === bookmarks.length - 1 ? lastBookmarkRef : null}
                     className="select-none"
                   >
@@ -152,7 +153,7 @@ export default function Page() {
                   }}>Copy
                     <ContextMenuShortcut>⌘ + Enter</ContextMenuShortcut>
                   </ContextMenuItem>
-                  {isUrl(bookmark.snippet) &&
+                  {(isUrl(bookmark.snippet) || isImage(bookmark.contentType)) &&
                     <ContextMenuItem onClick={() => {
                       setCursor(index);
                       openBookmark();
