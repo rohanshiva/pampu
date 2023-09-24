@@ -44,8 +44,8 @@ class Store {
         try {
             await this.drive.put(filename, { data: buffer, contentType: item["content_type"] });
             return key;
-        } catch (err: any) {
-            throw Error("Sorry, something is wrong! Couldn't sync your bookmark's file. Please try refreshing.");
+        } catch (error: any) {
+            throw error;
         }
     }
 
@@ -54,8 +54,7 @@ class Store {
             await this.base.put(decamelizeKeys(bookmark) as DetaType);
             return bookmark;
         } catch (error: any) {
-
-            throw Error("Sorry, somehting is wrong! Couldn't sync your bookmark. Please try refreshing.");
+            throw error;
         }
     }
 
@@ -66,7 +65,7 @@ class Store {
             const bookmarks = await response.items;
             return bookmarks.map((bookmark) => camelizeKeys(bookmark) as IBookmark);
         } catch (error: any) {
-            throw Error("Sorry, something is wrong! Please try refreshing.")
+            throw error
         }
     }
 
@@ -79,8 +78,8 @@ class Store {
 
         try {
             await this.base.delete(key);
-        } catch (err) {
-            throw Error("Sorry, something is wrong! Couldn't delete your bookmark.");
+        } catch (error) {
+            throw error
         }
 
         if (item["content_type"] == ContentType.TEXT) {
@@ -93,7 +92,7 @@ class Store {
             await this.drive.delete(filename);
             return key
         } catch (error: any) {
-            throw Error("Sorry, something is wrong! Couldn't delete your bookmark's image.")
+            throw error
         }
     }
 

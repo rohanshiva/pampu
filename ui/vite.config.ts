@@ -65,7 +65,11 @@ export default defineConfig({
         ]
       },
       workbox: {
-        navigateFallbackDenylist: [/^\/api/]
+        navigateFallbackDenylist: [
+          /^\/api\//,
+          /^\/__space\//,
+          /^(?!.*manifest\.webmanifest).*/,
+        ]
       }
     })
   ],
