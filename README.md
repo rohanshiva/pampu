@@ -7,7 +7,7 @@
 
 Pampu allows you to effortlessly collect & manage your stash of bits such as any text, images, or links 🗃️ across all of your devices 📱 💻. 
 
-Simply pampu anything to your personal space ⛅, and seamlessly transitional between your devices.
+Simply pampu anything to your personal space ⛅, and seamlessly transition between your devices.
 
 ## Features
 
