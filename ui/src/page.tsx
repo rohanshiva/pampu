@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { ContentType, isImage } from "./interfaces";
 import Store from "./services/store";
 import PreviewBookmark from "./preview-bookmark";
+import { switchTheme } from "./theme-toggle";
 
 export default function Page() {
   const [theme, setTheme] = useState(ThemeType.LIGHT);
@@ -88,6 +89,9 @@ export default function Page() {
       } else if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.code === Key.P) {
         event.preventDefault();
         setPreviewOpen(true);
+      } else if (event.altKey && (event.code === Key.T)) {
+        event.preventDefault();
+        switchTheme(setTheme);
       } else if ((event.metaKey || event.ctrlKey) && event.code === Key.I) {
         event.preventDefault();
         openBookmark();

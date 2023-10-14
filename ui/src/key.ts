@@ -9,5 +9,6 @@ export enum Key {
     I = "KeyI",
     P = "KeyP",
     S = "KeyS",
+    T = "KeyT",
     V = "KeyV"
 }

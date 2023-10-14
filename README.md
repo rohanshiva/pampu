@@ -1,10 +1,3 @@
----
-app_name: pampu
-tagline: clipboard - notes - bookmarks
-theme_color: "#09080A"
-git: "https://github.com/rohanshiva/pampu"
----
-
 # Pampu! ✨
 
 ### clipboard - notes - bookmarks
@@ -29,4 +22,5 @@ Simply pampu anything to your personal space ⛅, and seamlessly transitional be
 - copy paste images from your clipboard
 - drag and drop image files from your system to the textarea prompt
 - browse and select images from your photo library on your mobile devices
+
 
