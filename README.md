@@ -15,7 +15,7 @@ Simply pampu anything to your personal space ⛅, and seamlessly transition betw
 - `cmd/ctrl` + `enter` to copy selected bookmark
 - `cmd/ctrl` + `i` to open links or images
 - `cmd/ctrl` + `backspace` to delete
-- `cmd/ctrl` + `shift`` + `p` to preview images
+- `cmd/ctrl` + `shift` + `p` to preview images
 
 
 ### Images (.png)
